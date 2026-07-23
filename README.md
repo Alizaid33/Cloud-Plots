@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains an R implementation of a Cloud Plot method for spherical data. The method provides visualization of spherical observations, identifies potential outliers, and evaluates the fit of the von Mises–Fisher distribution using graphical goodness-of-fit procedures.
+This repository contains an R implementation of a Cloud Plot method for spherical data. The method provides visualization of spherical observations and identifies potential outliers.
 
 ## Repository contents
 
