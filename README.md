@@ -81,7 +81,7 @@ The script performs:
 - estimation of the concentration parameter,
 - Cloud Plot outlier detection,
 - spherical visualization,
-- graphical goodness-of-fit analysis for the von Mises–Fisher distribution.
+
 
 ### Example 2: Gait dataset
 
@@ -99,7 +99,7 @@ The same workflow is applied:
 - parameter estimation,
 - outlier detection,
 - Cloud Plot visualization,
-- goodness-of-fit assessment.
+
 
 ## How to run
 
