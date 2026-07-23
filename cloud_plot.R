@@ -9,7 +9,7 @@ library(geometry)
 library(Directional)
 library(readxl)
 
-set.seed(1230)
+set.seed(123)
 
 # Helper Functions
 geodesic_distance <- function(p1, p2) {
