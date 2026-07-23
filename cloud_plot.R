@@ -9,7 +9,7 @@ library(geometry)
 library(Directional)
 library(readxl)
 
-set.seed(123)
+set.seed(1230)
 
 # Helper Functions
 geodesic_distance <- function(p1, p2) {
@@ -104,16 +104,16 @@ add_spherical_grid <- function(nlat = 5, nlon = 8) {
 }
 
 # Main function
-analyze_and_visualize_spherical_data <- function(data_spherical) {
-  if (!is.data.frame(data_spherical) || !all(c("theta", "phi") %in% colnames(data_spherical))) {
+analyze_and_visualize_spherical_data <- function(DATA) {
+  if (!is.data.frame(DATA) || !all(c("theta", "phi") %in% colnames(DATA))) {
     stop("Input must be a data.frame with 'theta' and 'phi' columns.")
   }
   
   # Convert to Cartesian
   data_cartesian <- as.matrix(data.frame(
-    x = sin(data_spherical$theta) * cos(data_spherical$phi),
-    y = sin(data_spherical$theta) * sin(data_spherical$phi),
-    z = cos(data_spherical$theta)
+    x = sin(DATA$theta) * cos(DATA$phi),
+    y = sin(DATA$theta) * sin(DATA$phi),
+    z = cos(DATA$theta)
   ))
   n <- nrow(data_cartesian)
   if (n < 2) stop("Need at least 2 data points.")
@@ -224,84 +224,8 @@ analyze_and_visualize_spherical_data <- function(data_spherical) {
     pts <- data_cartesian[i, ]
     text3d(pts[1]- 0.5, pts[2], pts[3] , texts = i, col = "black", cex = 1.1)
   }
+
 }
-
-
-
-# A Graphical Goodness-of-Fit Analysis of Spherical Data to the von Mises-Fisher Distribution
-
-n <- length(Datatheta)
-
-# 2. Calculation of Sample Mean Direction (theta_bar, phi_bar)
-L <- sum(sin(Datatheta) * cos(Dataphi))
-M <- sum(sin(Datatheta) * sin(Dataphi))
-N <- sum(cos(Datatheta))
-R <- sqrt(L^2 + M^2 + N^2)
-
-theta_bar <- acos(N / R)
-phi_bar <- atan2(M, L)
-
-# First Rotational Transformation to (theta_prime, phi_prime)
-theta_prime <- numeric(n)
-phi_prime <- numeric(n)
-for (i in 1:n) {
-  cos_theta_prime <- sin(Datatheta[i]) * sin(theta_bar) * cos(Dataphi[i] - phi_bar) + cos(Datatheta[i]) * cos(theta_bar)
-  sin_theta_prime_cos_phi_prime <- sin(Datatheta[i]) * cos(theta_bar) * cos(Dataphi[i] - phi_bar) - cos(Datatheta[i]) * sin(theta_bar)
-  sin_theta_prime_sin_phi_prime <- sin(Datatheta[i]) * sin(Dataphi[i] - phi_bar)
-  theta_prime[i] <- acos(cos_theta_prime)
-  phi_prime[i] <- atan2(sin_theta_prime_sin_phi_prime, sin_theta_prime_cos_phi_prime)
-}
-
-# 4. Second Rotational Transformation to (theta_prime_prime, phi_prime_prime)
-theta_prime_prime <- numeric(n)
-phi_prime_prime <- numeric(n)
-
-for (i in 1:n) {
-  cos_theta_pp <- sin(Datatheta[i]) * cos(theta_bar) * cos(Dataphi[i] - phi_bar) - cos(Datatheta[i]) * sin(theta_bar)
-  sin_theta_pp_cos_phi_pp <- sin(Datatheta[i]) * sin(theta_bar) * cos(Dataphi[i] - phi_bar) + cos(Datatheta[i]) * cos(theta_bar)
-  sin_theta_pp_sin_phi_pp <- -sin(Datatheta[i]) * sin(Dataphi[i] - phi_bar)
-  
-  theta_prime_prime[i] <- acos(cos_theta_pp)
-  phi_prime_prime[i] <- atan2(sin_theta_pp_sin_phi_pp, sin_theta_pp_cos_phi_pp)
-}
-par(mfrow = c(1, 3))
-# 5. Colatitude Plot Procedure (c' vs. Exponential Quantiles)
-c_prime <- 1 - cos(theta_prime)
-c_prime_sorted <- sort(c_prime)
-exp_quantiles <- log(n / (n - (1:n) + 0.5))
-
-plot(exp_quantiles, c_prime_sorted,
-     main="(a) Colatitude Plot",
-     xlab=expression(paste("Theoretical Exponential Quantiles, ", E[i,n])),
-     ylab=expression(paste("Ordered Sample Values, ", c[i]^{"'"})))
-lm_colat <- lm(c_prime_sorted ~ 0 + exp_quantiles)
-abline(lm_colat, col="red")
-
-
-# 6. Longitude Plot Procedure (phi' vs. Uniform Quantiles)
-phi_prime_normalized <- phi_prime / (2 * pi)
-phi_prime_normalized_sorted <- sort(phi_prime_normalized)
-uniform_quantiles <- ((1:n) - 0.5) / n
-
-plot(uniform_quantiles, phi_prime_normalized_sorted,
-     main="(b) Longitude Plot",
-     xlab=expression(paste("Theoretical Uniform Quantiles, ", U[i,n])),
-     ylab=expression(paste("Ordered Normalized Sample Values, ", (phi[i]^{"'"} / 2*pi))))
-abline(a=-0.5, b=1, col="red")
-
-# 7. Two-Variable Plot Procedure (t vs. Normal Quantiles)
-t_values <- phi_prime_prime * sqrt(sin(theta_prime_prime))
-t_sorted <- sort(t_values)
-normal_quantiles <- qnorm(((1:n) - 0.5) / n)
-
-plot(normal_quantiles, t_sorted,
-     main="(c) Two-Variable Plot",
-     xlab=expression(paste("Theoretical Normal Quantiles, ", Q[i,n])),
-     ylab=expression(paste("Ordered Sample Values, ", t[i])))
-lm_two_var <- lm(t_sorted ~ 0 + normal_quantiles)
-abline(lm_two_var, col="red")
-
-
 
 
 
@@ -309,7 +233,7 @@ abline(lm_two_var, col="red")
 ## Choose dataset
 ## ===========================
 
-dataset <- "eye"      # "eye" or "gait"
+dataset <- "gait"      # "eye" or "gait"
 
 if (dataset == "eye") {
   
