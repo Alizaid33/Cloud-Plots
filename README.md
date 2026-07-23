@@ -1,8 +1,23 @@
-# Cloud Plots
+# Cloud Plot for Spherical Data
 
 ## Overview
 
-This repository contains an R implementation of a Cloud Plot method for spherical data. The method provides visualization of spherical observations and identifies potential outliers.
+This repository contains the R code used to construct a Cloud Plot for spherical data and to identify potential outlying observations using a geodesic-distance-based procedure.
+
+The repository includes:
+
+1. An application to the eye dataset supplied with this repository.
+2. An application to the gait dataset available through the `fda` R package.
+
+The code implements the complete workflow used in the applications:
+
+1. loading the data;
+2. converting spherical coordinates to Cartesian coordinates on the unit sphere;
+3. estimating the mean direction and concentration parameter;
+4. calculating geodesic distances;
+5. constructing the Cloud Plot;
+6. identifying potential outlying observations; and
+7. producing a three-dimensional visualization of the observations and the resulting Cloud Plot region.
 
 ## Repository contents
 
@@ -11,6 +26,30 @@ cloud_plot.R
 eye_data.xlsx
 README.md
 ```
+
+
+`cloud_plot.R`
+
+Main R script containing:
+
+- data loading;
+- spherical-to-Cartesian coordinate transformation;
+- estimation of the concentration parameter;
+- geodesic-distance calculations;
+- Cloud Plot construction;
+- outlier identification; and
+- three-dimensional visualization.
+
+`eye_data.xlsx`
+
+The eye-movement dataset used in the first application.
+
+`README.md`
+
+This file provides the complete workflow for reproducing the analyses.
+
+
+
 
 ## Required R packages
 
