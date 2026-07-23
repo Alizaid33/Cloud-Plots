@@ -158,9 +158,9 @@ analyze_and_visualize_spherical_data <- function(DATA) {
   if (!is.na(kappa_hat) && kappa_hat >= 0 && !is.infinite(kappa_hat)) {
     p50 <- find_percentile(0.50, kappa_hat)
     p75 <- find_percentile(0.75, kappa_hat)
-    p99 <- find_percentile(0.99, kappa_hat)
-    if (!anyNA(c(p50, p75, p99)) && p50 > 0) {
-      estimated_k_cloud <- (p99 - p75) / p50
+    p95 <- find_percentile(0.95, kappa_hat)
+    if (!anyNA(c(p50, p75, p95)) && p50 > 0) {
+      estimated_k_cloud <- (p95 - p75) / p50
       med <- Directional::mediandir(data_cartesian)
       dists <- sapply(1:n, function(i) geodesic_distance(data_cartesian[i, ], as.numeric(med)))
    
