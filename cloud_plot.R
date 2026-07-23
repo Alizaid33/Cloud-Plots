@@ -245,8 +245,12 @@ if (dataset == "eye") {
 } else if (dataset == "gait") {
   
   library(fda)
+
+  # Select one child
+  subject_index <- 1
   
-  subject_data <- gait[1,,]
+  # Extract the complete 20-point gait trajectory
+  subject_data <- gait[subject_index, , ]
   
   my_data_df <- data.frame(
     theta = subject_data[,1] * pi/180,
